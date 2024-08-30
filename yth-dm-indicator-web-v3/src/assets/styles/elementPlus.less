@@ -1,0 +1,54 @@
+/*
+* @Author: wqsong2
+* @Date: 2023/7/13 18:10
+* @Desciption: 全局修改element组件样式
+*/
+body {
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+// 滚动条样式
+::-webkit-scrollbar-track-piece {
+	background-color: #f8f8f8;
+}
+::-webkit-scrollbar {
+	width: 5px;
+	height: 9px;
+}
+::-webkit-scrollbar-thumb {
+	background-color: lightskyblue;
+	background-clip: padding-box;
+	min-height: 25px;
+	border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover {
+	background-color: deepskyblue;
+}
+// 输入移入去除黑边
+.el-dropdown-link:focus {
+	outline: none;
+}
+// 下拉框宽度 100%
+.el-form .el-select {
+	width: 100%;
+}
+//布局样式
+.list-wrap {
+	box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.1);
+	box-sizing: border-box;
+	padding: 27px 10px 9px 10px;
+	background-color: #ffffff;
+}
+//溢出隐藏
+.ell {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
