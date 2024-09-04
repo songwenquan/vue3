@@ -27,7 +27,7 @@
           </el-table>
         </template>
       </el-table-column>
-      <el-table-column v-if="multiple" :reserve-selection="reserveSelection" type="selection" width="55"></el-table-column>
+      <el-table-column v-if="multiple"  type="selection" width="55"></el-table-column>
       <el-table-column type="index" width="80" v-if="showIndex" label="序号">
         <template #default="scope">
           <span :class="'index-' + scope.$index">{{ scope.$index + 1 }}</span>
@@ -111,7 +111,7 @@ const exSlot = {
 };
 const props = defineProps({
   heights:{
-    type: Number,
+    type: [String,Number],
     default: '',
   },
   // 父级传递数据
@@ -268,8 +268,8 @@ const { expandRowKeys, pager, param, total, listData, select, headerCellStyle, }
     expandRowKeys: [],
     pager: {
       // 分页
-      pageNum: 1,
-      pageSize: 10,
+      pageNo: 1,
+      pageSize: 1,
     },
     total: 0, // 列表总数
     listData: [], // 列表数据
@@ -292,42 +292,23 @@ const getList = () => {
     param.value = showPage.value ? Object.assign({}, pager.value, params.value) : params.value;
     delete (param as any).value.receiveTime;
     delete (param as any).value.acceptTime;
-    let bxxt = true
-    if(bxxt){ // 定制化
-      service.value(param.value).then(async (res: any) => {
-        if (res) {
-          if (props.handleData) {
-            listData.value = props.handleData(res)[0];
-            total.value = showPage.value ? props.handleData(res)[1] : 0;
-          } else {
-            listData.value = res.rows;
-          }
-          nextTick(() => {
-            multiple.value && setCheckedRows();
-          });
+    service.value && api.value && proxy.$api[service.value][api.value](param.value).then(async (res: any) => {
+      if (res.flag) {
+        if (props.handleData) {
+          listData.value = props.handleData(res)[0];
+          total.value = showPage.value ? props.handleData(res)[1] : 0;
         } else {
-          proxy.ElMessage.error(res.data.msg);
-          listData.value = [];
+          listData.value = res.data.rows;
+          total.value = res.data.total
         }
-      });
-    }else {
-      service.value && api.value && proxy.$api[service.value][api.value](param.value).then(async (res: any) => {
-        if (res.flag) {
-          total.value = showPage.value ? res.data.total : 0;
-          if (props.handleData) {
-            listData.value = props.handleData(res.data);
-          } else {
-            listData.value = res.data.rows;
-          }
-          nextTick(() => {
-            multiple.value && setCheckedRows();
-          });
-        } else {
-          proxy.ElMessage.error(res.data.errMsg);
-          listData.value = [];
-        }
-      });
-    }
+        nextTick(() => {
+          multiple.value && setCheckedRows();
+        });
+      } else {
+        proxy.ElMessage.error(res.data.errMsg);
+        listData.value = [];
+      }
+    });
   });
 };
 // 某行自定义class名字
@@ -386,7 +367,7 @@ const handleSizeChange = (val: any) => {
 };
 // 翻页事件
 const handleCurrentChange = (val: any) => {
-  pager.value.pageNum = val;
+  pager.value.pageNo = val;
   getList();
 };
 // 全选勾选列表操作
@@ -417,6 +398,9 @@ const selectRow = (selection: any, row: never) => {
 // 回显已勾选的数据
 const table: any = ref(null);
 const setCheckedRows = () => {
+  if(!reserveSelection.value){
+    return false
+  }
   listData.value.forEach((item: any) => {
     select.value.forEach((child: any) => {
       if (item[rowKey.value] === child[rowKey.value]) {
