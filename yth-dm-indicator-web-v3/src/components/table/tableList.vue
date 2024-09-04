@@ -432,6 +432,7 @@ const rowCurrentChange = (item: any) => {
 // 传递调用方法
 defineExpose({
   init,
+  select,
   changeDrawer,
 });
 </script>
