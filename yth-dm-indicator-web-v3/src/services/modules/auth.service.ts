@@ -6,25 +6,31 @@
 import HttpClient from '@/utils/http-client';
 import { config } from '@/configs/index';
 const http1$ = new HttpClient(config.baseUrl);
-const http$ = new HttpClient(config.baseUrl2);
 export default {
 	// 获取用户信息
 	getUserInfo() {
 		return http1$.request({
-			url: '/session/userInfo/get',
-			method: 'get',
+			url: '/uap/getInfo',
+			method: 'post',
 		});
 	},
-	// 获取菜单
+  // 获取系统菜单
+  getgetRoutersData() {
+    return http1$.request({
+      url: '/uap/getRouters',
+      method: 'get',
+    });
+  },
+	// 获取uap配置权限菜单
 	getMenuData() {
-		return http$.request({
-			url: '/getNav',
-			method: 'post',
+		return http1$.request({
+			url: '/uap/menu',
+			method: 'get',
 		});
 	},
 	// 退出登录
 	logout() {
-		return http$.request({
+		return http1$.request({
 			url: '/system/logout',
 			method: 'post',
 		});

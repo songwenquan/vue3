@@ -76,15 +76,30 @@ export function exportExcel(params: any, service: any, api: any, menuName: any, 
 	});
 }
 // 判断是否存在子集url
-export function children(menus: any) {
+export function children(menus: any,type:any) {
   let result = "";
   if(menus[0].children.length > 0){
-    result = children(menus[0].children)
+    result = children(menus[0].children,'')
   }else{
     result = menus[0].menuUrl
     store.commit('menu/MUT_SetMenuvisitedViews', result);
   }
   return result
+}
+let redirect = ''
+// 判断是否存在子集url
+export function childrenStr(menus: any,type:any) {
+  if(menus[0].children && menus[0].children.length > 0){
+    if(type == 1){
+      redirect  = redirect + menus[0].path
+    }else{
+      redirect  = redirect + '/' + menus[0].path
+    }
+    childrenStr(menus[0].children,'')
+  }else{
+    redirect  = redirect + '/' + menus[0].path
+  }
+  return redirect
 }
 // 全局通信事件方法
 const emitter: Emitter<MittType> = mitt<MittType>();

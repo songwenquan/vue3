@@ -25,12 +25,13 @@ export const intialState: stateAppMenu = {
 };
 const children: any = (menus: any) => {
   menus.map((item:any) =>{
-    item.menuUrl = item.url.split('#')[1]
-    item.children = item.items
-    item.menuName = item.title
-    item.parentId = item.upauthId
-    if(item.items.length > 0){
-      children(item.items)
+    item.menuUrl = item.path
+    item.menuName = item.meta.title
+    item.parentId = item.meta.title
+    if(item.children?.length > 0){
+      children(item.children)
+    }else {
+      item.children = []
     }
   })
 };
@@ -42,6 +43,29 @@ const routerListFunc = (list:any,urlArray:any) => {
     }else if(item.children && item.children.length > 0){
       routerListFunc(item.children,urlArray)
     }
+  })
+}
+// 递归重新组装菜单
+const menuList = (resList:any,res:any,resData:any) => {
+  resList.forEach((item:any)=>{
+    res?.forEach((items:any)=>{
+      if(item.path == items.path){
+        resData.push({
+          children:[],
+          alwaysShow:items.alwaysShow,
+          component:items.component,
+          hidden:items.hidden,
+          meta:items.meta,
+          name:items.name,
+          path:items.path,
+          redirect:items.redirect,
+          query:items.query
+        })
+        if(item.children && item.children.length>0){
+          menuList(item.children,items.children,resData[resData.length-1].children)
+        }
+      }
+    })
   })
 }
 export default {
@@ -66,21 +90,23 @@ export default {
 	actions: {
 		async ACT_GetMenu({ commit }: { commit: any }) {
 			try {
+        const response = await auth.getgetRoutersData();
 				const devResponse: any = {
 					errCode: '-1',
 					errMsg: '操作成功',
-					data: waterData.data.items,
+					data: response.data,
 					flag: true,
 				};
-				let nMenu = [];
-				if (process.env.NODE_ENV === 'production') {
-					const response = await auth.getMenuData();
-					if (!response.data.flag) {
-						return { flag: false, errCode: response.data.errCode, msg: response.data.errMsg };
-					}
-					nMenu = response.data && response.data.data;
-				}
-				const menu = process.env.NODE_ENV === 'production' ? nMenu : devResponse.data.concat(nMenu);
+        // 授权菜单二次处理合并
+        const whetherOrNotToFilter = true
+        let nMenu:any = [];
+        if(whetherOrNotToFilter){
+          const resList = await auth.getMenuData();
+          if(resList.data.children && resList.data.children.length  > 0){
+            menuList(resList.data.children,response.data,nMenu)
+          }
+        }
+        let menu = whetherOrNotToFilter ? nMenu : devResponse.data.concat(nMenu);
         // 部分菜单兼容改造
         children(menu)
 				// menu.map((item: any) => {

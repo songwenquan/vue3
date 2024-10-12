@@ -48,7 +48,7 @@ import { useRouter } from 'vue-router';
 import LangSelect from '@/components/lang_select/index.vue';
 import type { FormInstance, FormRules } from 'element-plus';
 import { useStoreActions } from '@/store/vuex';
-import { checkCapslock,children} from '@/utils/utils';
+import {checkCapslock, children, childrenStr} from '@/utils/utils';
 const router = useRouter();
 const { proxy } = getCurrentInstance() as any; // this
 // 登录
@@ -80,7 +80,7 @@ const handleLogin = async (formEl: FormInstance | undefined) => {
 			const menus = await menuList.ACT_GetMenu();
 			if (menus.flag === true) {
 				if (menus.menu.length > 0) {
-					const url = children(menus.menu);
+					const url = childrenStr(menus.menu);
 					router.push({ path: url });
 				} else {
 					proxy.$message.warning('暂无菜单权限', 3000);

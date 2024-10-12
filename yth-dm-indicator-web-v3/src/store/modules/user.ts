@@ -20,7 +20,7 @@ export default {
 		async ACT_GetUserInfo({ commit }: { commit: any }) {
 			try {
 				const response: any = await auth.getUserInfo();
-				if (response.flag || response.success) {
+        if (response.flag || response.success || response.code === '200') {
 					const data = response.data.uapUser;
 					commit('MUT_SetUser', data);
 					return { flag: true, user: data };

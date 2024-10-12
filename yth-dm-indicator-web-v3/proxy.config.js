@@ -7,26 +7,13 @@
 /* eslint-disable */
 const proxyArr = [
   {
-    cookie: 'SESSION=YWU2OGRjZTItMDIxOC00ODAwLTgzMzYtNzUyNGM4OWE2NWIx;',
-    context: 'yth-dm-indicator-web',
+    context: 'bx_xtpt',
     options: {
-      target: 'https://xc-pro.iflytek.work/',
+      target: 'http://172.30.93.230:8899',
       ws: true,
       changeOrigin: true,
       pathRewrite: {
-        '^/yth-dm-indicator-web': '/yth-dm-indicator-web'
-      }
-    }
-  },
-  {
-    cookie: 'SESSION=OTkxOGZkZmQtNTU5MS00ZmU5LWIxOWItOTM5Y2VlM2Q3YzBi;',
-    context: 'base',
-    options: {
-      target: 'https://xc-pro.iflytek.work/',
-      ws: true,
-      changeOrigin: true,
-      pathRewrite: {
-        '^/base': '/base'
+        '^/bx_xtpt': '/bx_xtpt'
       }
     }
   },

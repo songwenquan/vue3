@@ -4,7 +4,7 @@
  * @Desciption:路由总入口拦截器
  */
 import { createRouter, createWebHistory, RouteRecordRaw, RouteLocationNormalized, NavigationGuardNext } from 'vue-router';
-import { checkPermission } from '@/utils/utils';
+import {checkPermission, childrenStr} from '@/utils/utils';
 import { createApp } from 'vue';
 import { ElMessage } from 'element-plus';
 import { children} from '@/utils/utils';
@@ -66,7 +66,8 @@ async function menusFunc(to: RouteLocationNormalized, next: NavigationGuardNext)
 		}
 	}
   if(to.path === '/'){
-    const url = children(menus);
+    const url = childrenStr(menus,1);
+    debugger
     fullScreen(to, next, url);
   }else if (process.env.NODE_ENV === 'production' && to.path !== '/permissionMenu' && checkPermission('menuUrl', to.path, menus) === -1) {
 		// 没有该菜单权限
