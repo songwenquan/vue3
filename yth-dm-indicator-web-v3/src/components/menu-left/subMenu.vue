@@ -1,29 +1,30 @@
 /* * @Author: wqsong2 * @Date: 2023/11/13 19:49 * @Desciption:菜单列表组件 */
 <template>
 	<div id="SubMenu" class="SubMenu">
-		<el-sub-menu v-if="sub.children && sub.children.length" ref="subMenuRef" :index=sub.id :title="sub.title">
+		<el-sub-menu v-if="sub.children && sub.children.length" ref="subMenuRef" :index=sub.id :title="sub.title || sub.menuName">
 			<template #title>
 				<!--  添加  sub-el-icon 类收缩时，图标居中 -->
 <!--				<img v-if="!$route.path.includes(sub.menuUrl) && sub.icon !== ''" :src="sub.icon" alt="" />-->
         <i :class="['bg-icon', sub.icon]" class="menu-pre-icon" v-if="!$route.path.includes(sub.menuUrl) && sub.icon !== ''" ></i>
 				<img v-else-if="$route.path.includes(sub.menuUrl) && sub.iconActive !== ''" :src="sub.iconActive" alt="" />
-				<slot name="title" v-if="!isCollapse" class="fz15 ml5">{{ sub.title && sub.title }}</slot>
+				<slot name="title" v-if="!isCollapse" class="fz15 ml5">{{ sub.title || sub.menuName }}</slot>
 			</template>
 			<subMenu v-for="ch in sub.children" :key="ch.id" :sub="ch"></subMenu>
 		</el-sub-menu>
 		<!-- 注意 :index ‘’ 多级情况下可能有问题   -->
-		<el-menu-item v-else :index="sub.menuUrl" class="scmp-menu-item" :title="sub.title">
+		<el-menu-item v-else :index="sub.menuUrl" class="scmp-menu-item" :title="sub.title || sub.menuName">
 			<!--  添加  sub-el-icon 类收缩时，图标居中      -->
 <!--			<img v-if="$route.path !== sub.menuUrl && sub.icon !== ''" :src="sub.icon" alt="" />-->
-      <i :class="['bg-icon', sub.icon]" class="menu-pre-icon" v-if="!$route.path.includes(sub.menuUrl) && sub.icon !== ''" ></i>
+      <SvgIcons :icon-class="sub.meta && sub.meta.icon" v-if="sub.meta.icon !== ''"/>
 			<img v-else-if="$route.path === sub.menuUrl && sub.iconActive !== ''" :src="sub.iconActive" alt="" />
-			<slot name="title" v-if="!isCollapse" class="fz15 ml5">{{ sub.title && sub.title }}</slot>
+			<slot name="title" v-if="!isCollapse" class="fz15 ml5">{{ sub.title || sub.menuName }}</slot>
 		</el-menu-item>
 	</div>
 </template>
 
 <script setup lang="ts">
 import { onMounted, toRefs } from 'vue';
+import SvgIcons from "@/components/svgIcons/index.vue";
 const props = defineProps({
 	sub: {
 		type: Object,

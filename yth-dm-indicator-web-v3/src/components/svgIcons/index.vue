@@ -1,6 +1,6 @@
 /* * @Author: wqsong2 * @Date: 2023/11/6 17:03 * @Desciption:svg图标组件 */
 <template>
-	<svg aria-hidden="true" :width="width" :height="height">
+	<svg aria-hidden="true" :width="width" :height="height" :class="svgClass">
 		<use :xlink:href="iconName" :fill="color" />
 	</svg>
 </template>
@@ -26,8 +26,14 @@ const props = defineProps({
 	},
 });
 const iconName = computed(() => {
-	return props.iconClass;
+	return `#icon-${props.iconClass}`
 });
+const svgClass = computed(() => {
+  if (props.className) {
+    return `svg-icon ${props.className}`
+  }
+  return 'svg-icon'
+})
 </script>
 
 <style scoped lang="scss"></style>

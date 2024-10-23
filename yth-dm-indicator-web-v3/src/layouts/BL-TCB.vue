@@ -7,14 +7,14 @@
 					<i class="title_icon mr10"></i>
 				</template>
 				<template v-slot:text>
-					<span class="title_text fz18 color-f">vue+ts 模板</span>
+					<span class="title_text fz18 color-f">智能业务协同系统</span>
 				</template>
 			</Header>
 			<UserPanel @loginOut="actLogout"></UserPanel>
 		</el-header>
 		<el-container class="main_content flex flex-h-1">
 			<el-aside :width="isCollapse ? '64px' : '220px'" v-if="$route.meta.isHideAside" class="flex">
-				<MenuLeft :menu-array="menuArray" @nav-item-select="menuItemSelect" :isCollapse="isCollapse"></MenuLeft>
+				<MenuLeft :menu-array="leftMenu" @nav-item-select="menuItemSelect" :isCollapse="isCollapse"></MenuLeft>
 				<div class="collapse fz14 c3 cursor-p pl20" :style="{ width: isCollapse ? '64px' : '220px' }" @click="isCollapse = !isCollapse">
 					<el-icon v-if="isCollapse"><Expand /></el-icon>
 					<el-icon v-else><Fold /></el-icon>
@@ -38,12 +38,13 @@ import MenuLeft from '@/components/menu-left/index.vue';
 
 const router = useRouter();
 const route = useRoute();
-let { isCollapse, activeIdx, subMenuClassName, levelList } = toRefs(
+let { isCollapse, activeIdx, subMenuClassName, levelList,leftMenu} = toRefs(
 	reactive({
 		isCollapse: false as boolean, // 展开收起状态
 		activeIdx: '',
 		subMenuClassName: 'clear-top-drop-dowm',
 		levelList: [],
+    leftMenu:[]
 	})
 );
 console.log(activeIdx,subMenuClassName)
@@ -100,7 +101,7 @@ const levelListFunc = () => {
 				}
 			});
 		});
-		menuList.ACT_SetlevelList(parentDirectory);
+		menuList.ACT_SetlevelList(  parentDirectory);
 	} else {
 		menuList.ACT_SetlevelList([{ menuUrl: (levelList as any).menuUrl, menuName: (levelList as any).menuName }]);
 	}
@@ -155,6 +156,12 @@ const menuNameChild = (item: any, children: any, key: string, code: string) => {
 };
 // 路由监听
 watchEffect(() => {
+  // 双位置菜单拆分
+  menuArray.value.map((item:any)=>{
+    if(route.path.startsWith(item.path)){
+      leftMenu.value = item.children
+    }
+  })
 	levelListFunc();
 });
 </script>

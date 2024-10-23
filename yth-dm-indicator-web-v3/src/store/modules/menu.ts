@@ -6,6 +6,7 @@
 // @ts-ignore
 import waterData from '$public/nav.json'
 import { searchTreeL, handleAuthMenu, searchTree } from '@/utils/arithmetic';
+import {isHttp, loadView} from '@/utils/utils';
 import auth from '@/services/modules/auth.service';
 import router from '@/router/index';
 import { url } from '@/utils/regexp';
@@ -23,13 +24,25 @@ export const intialState: stateAppMenu = {
 	matched: {},
   visitedViews:[],
 };
-const children: any = (menus: any) => {
+
+const children: any = (menus: any,menuUrl:'') => {
   menus.map((item:any) =>{
-    item.menuUrl = item.path
+    item.menuUrl = menuUrl ? menuUrl + '/' +item.path : item.path
     item.menuName = item.meta.title
-    item.parentId = item.meta.title
+    item.meta.keepAlive = false
+    item.meta.fullScreen = 'TCB'
+    item.meta.requireAuth = true
+    item.meta.nobread = true
+    item.meta.noTagsView = true
+    item.meta.isHideAside = true
+    item.meta.affix = false
+    if (item.component === 'Layout') {
+      item.component = loadView(item.component,1)
+    }else if(item.component){
+      item.component = loadView(item.component,'')
+    }
     if(item.children?.length > 0){
-      children(item.children)
+      children(item.children,item.menuUrl)
     }else {
       item.children = []
     }
@@ -38,7 +51,7 @@ const children: any = (menus: any) => {
 let listArray:any = null
 const routerListFunc = (list:any,urlArray:any) => {
   list.map((item:any)=>{
-    if(item.path === urlArray){
+    if(item.menuUrl === urlArray){
       listArray = item
     }else if(item.children && item.children.length > 0){
       routerListFunc(item.children,urlArray)
@@ -163,10 +176,11 @@ export default {
 		},
     // 添加点击过的菜单
     async MUT_SetMenuvisitedViews (state: any, urlArray: any){
-      let arr = state.visitedViews.filter((item:any) => item.path === urlArray.path);
+      let arr = state.visitedViews.filter((item:any) => item.menuUrl === urlArray.path);
       if (arr.length == 0) {
         listArray = null
-        await routerListFunc(router.options.routes,urlArray.path)
+        let menus = router.options.routes.concat(state.menu)
+        await routerListFunc(menus,urlArray.path)
         if(listArray){
           listArray.query = urlArray.query
           state.visitedViews.push(listArray)
@@ -175,7 +189,7 @@ export default {
     },
     // 删除某个菜单
     MUT_DeleteMenuvisitedViews (state: any, urlArray: any){
-      state.visitedViews = state.visitedViews.filter((item:any)=>item.path !== urlArray)
+      state.visitedViews = state.visitedViews.filter((item:any)=>item.menuUrl !== urlArray)
     }
 	},
 };

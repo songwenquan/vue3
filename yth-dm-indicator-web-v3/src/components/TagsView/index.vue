@@ -6,9 +6,9 @@
 <template>
   <div id="tags-view-container" class="tags-view-container bf mb10">
     <el-scrollbar ref="scrollPaneRef" class="tags-view-wrapper cursor-p bf fz12" >
-      <router-link class="tags-view-item ml5 mt5" v-for="tag in visitedViews" :key="tag.path" :data-path="tag.path" :class="isActive(tag) ? 'active' : ''" :to="{ path: tag.path, query: tag.query, fullPath: tag.fullPath }"
+      <router-link class="tags-view-item ml5 mt5" v-for="tag in visitedViews" :key="tag.menuUrl" :data-path="tag.menuUrl" :class="isActive(tag) ? 'active' : ''" :to="{ path: tag.menuUrl, query: tag.query, fullPath: tag.fullPath }"
                    :style="activeStyle(tag)" @click.middle="!isAffix(tag) ? closeSelectedTag(tag) : ''">
-        {{ tag.meta.title }}
+        {{ tag.meta?.title }}
         <span v-if="!isAffix(tag)" @click.prevent.stop="closeSelectedTag(tag)">
           <close class="el-icon-close" style="width: 1em; height: 1em; vertical-align: middle" />
         </span>
@@ -28,7 +28,7 @@ const { MUT_DeleteMenuvisitedViews } = useStoreMutations('menu', ['MUT_DeleteMen
 const { theme } = toRefs(reactive(useStoreState('app', ['theme'])));
 // 判断当前path是否相同url path
 const isActive = (r:any) => {
-  return r.path === route.path
+  return r.menuUrl === route.path
 }
 // 获取按钮选中颜色
 const activeStyle = (tag:any) => {
@@ -62,6 +62,10 @@ const isAffix = (tag:any) => {
 <style scoped lang="scss">
 a{
   text-decoration: none;
+}
+.active{
+  background: linear-gradient(90deg,#1677ff, #01a6ff) !important;
+  border: none !important;
 }
 .tags-view-container{
   display: flex;

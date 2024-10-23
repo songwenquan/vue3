@@ -4,7 +4,7 @@
  * @Desciption:路由总入口拦截器
  */
 import { createRouter, createWebHistory, RouteRecordRaw, RouteLocationNormalized, NavigationGuardNext } from 'vue-router';
-import {checkPermission, childrenStr} from '@/utils/utils';
+import {checkPermission, childrenStr,isHttp} from '@/utils/utils';
 import { createApp } from 'vue';
 import { ElMessage } from 'element-plus';
 import { children} from '@/utils/utils';
@@ -42,18 +42,22 @@ const router = createRouter({
 });
 // 判断主体路由模板
 function fullScreen(to: RouteLocationNormalized, next: NavigationGuardNext, url: any = '') {
-	document.title = to.meta.title ? (to.meta.title as string) : '管理平台';
-	if (to.meta.fullScreen) {
-		store.commit('layout/MUT_SetLayout', to.meta.fullScreen);
-		return url ? next(url) : next();
-	} else {
-		store.commit('layout/MUT_SetLayout', 'TCB');
-		return url ? next(url) : next();
-	}
+  document.title = to.meta?.title ? (to.meta?.title as string) : '智慧业务协同系统';
+  if (to.redirectedFrom) {
+    if (to.meta.fullScreen) {
+      store.commit('layout/MUT_SetLayout', to.meta.fullScreen);
+      return url ? next(url) : next();
+    } else {
+      store.commit('layout/MUT_SetLayout', 'TCB');
+      return url ? next(url) : next();
+    }
+  }else {
+    next({...to, replace: true }) // hack方法 确保addRoutes已完成
+  }
 }
 // 判断菜单权限
 async function menusFunc(to: RouteLocationNormalized, next: NavigationGuardNext) {
-	let menus: object = [];
+	let menus:any = [];
 	if (store.state.menu.menu && store.state.menu.menu.length > 0) {
 		// 判断是否有菜单数据
 		menus = store.state.menu.menu;
@@ -65,25 +69,29 @@ async function menusFunc(to: RouteLocationNormalized, next: NavigationGuardNext)
 			ElMessage.error({ message: menu.msg, duration: 3000 });
 		}
 	}
+  menus.forEach((routes:any) => {
+    if (!isHttp(routes.path)) {
+      router.addRoute({...routes}) // 动态添加可访问路由表
+    }
+  })
   if(to.path === '/'){
     const url = childrenStr(menus,1);
-    debugger
-    fullScreen(to, next, url);
-  }else if (process.env.NODE_ENV === 'production' && to.path !== '/permissionMenu' && checkPermission('menuUrl', to.path, menus) === -1) {
-		// 没有该菜单权限
-		ElMessage.error({ message: '暂无该菜单权限，请重新扫码登录', duration: 3000 });
-		fullScreen(to, next, '/permissionMenu');
-	} else {
+    fullScreen(to, next,url);
+  }else if (to.path !== '/permissionMenu' && checkPermission('menuUrl', to.path, menus) === -1) {
+    // 没有该菜单权限
+    ElMessage.error({ message: '暂无该菜单权限，请重新扫码登录', duration: 3000 });
+    fullScreen(to, next, '/permissionMenu');
+  } else {
     store.commit('menu/MUT_SetMenuvisitedViews', to);
-		fullScreen(to, next);
-	}
+    fullScreen(to, next);
+  }
 }
 // 路由守卫
 router.beforeEach(async (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) => {
 	NProgress.start();
 	// TODO: 权限验证（结合 menu store）
 	// 判断是否为需要登录的页面
-	if (to.meta.requireAuth === false || to.path === '/login') {
+  if (to.meta.requireAuth === false || to.path === '/login') {
 		fullScreen(to, next);
 	} else {
 		if (JSON.stringify(store.state.user.userInfo) !== '{}') {
@@ -96,10 +104,8 @@ router.beforeEach(async (to: RouteLocationNormalized, from: RouteLocationNormali
 			} else {
 				if (user.errCode === '401') {
 					ElMessage.warning({ message: user.msg, duration: 3000 });
-					// return next('/login');
 				} else {
 					ElMessage.warning({ message: user.msg, duration: 3000 });
-					// return next('/login');
 				}
 			}
 		}
