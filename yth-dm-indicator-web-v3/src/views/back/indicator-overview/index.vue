@@ -71,9 +71,9 @@
 
 <script setup lang="ts">
 import { toRefs, reactive,onMounted, getCurrentInstance, ref, nextTick } from 'vue';
-import lineChartBasic from '@/components/echarts/lineChart/lineChartBasic';
+import lineChartBasic from '@/components/echarts/lineChart/lineChartBasic.vue';
 import { useRouter } from 'vue-router';
-import detailList from "@/views/indicator-overview/comps/detailList.vue";
+import detailList from "@/views/back/indicator-overview/comps/detailList.vue";
 import PieChart from "@/components/echarts/pieChart/pieChart.vue";
 const router = useRouter();
 const { proxy } = getCurrentInstance() as any; // this

@@ -1,8 +1,8 @@
 /* * @Author: wqsong2 * @Date: 2023/11/3 14:48 * @Desciption:登录 */
 <template>
 	<div class="login fl">
-		<video poster="~@/assets/images/login/video-cover.jpeg" loop autoplay muted>
-			<source src="~@/assets/images/login/night.mp4" />
+		<video poster="../../../assets/images/login/video-cover.jpeg" loop autoplay muted>
+			<source src="../../../assets/images/login/night.mp4" />
 		</video>
 		<el-form ref="loginFormRef" :model="loginForm" :rules="loginRules" class="login-form" autocomplete="on" label-position="left">
 			<div class="title-container">

@@ -21,7 +21,7 @@ export default {
 			try {
 				const response: any = await auth.getUserInfo();
         if (response.flag || response.success || response.code === '200') {
-					const data = response.data.uapUser;
+					const data = response.data.user;
 					commit('MUT_SetUser', data);
 					return { flag: true, user: data };
 				} else {
