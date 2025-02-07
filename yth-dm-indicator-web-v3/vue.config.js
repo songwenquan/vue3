@@ -60,6 +60,12 @@ module.exports = defineConfig({
     }
   },
   chainWebpack: (config) => {
+    // 配置 svg-sprite-loader
+    config.module.rule("svg").exclude.add(resolve("src/icons")).end();
+    config.module.rule("icons").test(/\.svg$/).include.add(resolve("src/icons")).end()
+      .use("svg-sprite-loader").loader("svg-sprite-loader").options({
+        symbolId: "icon-[name]",
+      }).end();
     // 修复HMR
     config.resolve.symlinks(true)
     // 配置别名

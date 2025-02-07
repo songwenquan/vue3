@@ -16,6 +16,7 @@ export interface stateAppMenu {
 	levelList: string[];
 	matched: object;
   visitedViews: [];
+  topNav:Boolean;
 }
 export const intialState: stateAppMenu = {
 	menu: [],
@@ -23,6 +24,7 @@ export const intialState: stateAppMenu = {
 	levelList: [],
 	matched: {},
   visitedViews:[],
+  topNav:true,
 };
 
 const children: any = (menus: any,menuUrl:'') => {
@@ -88,6 +90,7 @@ export default {
 		levelList: intialState.levelList,
 		matched: intialState.matched,
     visitedViews: intialState.visitedViews,
+    topNav:intialState.topNav
 	},
 	getters: {
 		// 菜单中第一个无子节点的 item

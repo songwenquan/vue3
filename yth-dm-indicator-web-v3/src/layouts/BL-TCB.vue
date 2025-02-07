@@ -10,6 +10,8 @@
 					<span class="title_text fz18 color-f">智能业务协同系统</span>
 				</template>
 			</Header>
+      <!-- 横向布局 菜单栏 -->
+      <TopNav id="topmenu-container" class="topmenu-container" v-if="topNav" />
 			<UserPanel @loginOut="actLogout"></UserPanel>
 		</el-header>
 		<el-container class="main_content flex flex-h-1">
@@ -35,7 +37,7 @@ import { useStoreState, useStoreActions } from '@/store/vuex';
 import Header from '@/components/header/index.vue';
 import UserPanel from '@/components/user-panel/index.vue';
 import MenuLeft from '@/components/menu-left/index.vue';
-
+import TopNav from '@/components/top-nav/index.vue';
 const router = useRouter();
 const route = useRoute();
 let { isCollapse, activeIdx, subMenuClassName, levelList,leftMenu} = toRefs(
@@ -47,9 +49,8 @@ let { isCollapse, activeIdx, subMenuClassName, levelList,leftMenu} = toRefs(
     leftMenu:[]
 	})
 );
-console.log(activeIdx,subMenuClassName)
 // menu store-state-menu
-const { menu: menuArray } = toRefs(reactive(useStoreState('menu', ['menu'])));
+const { menu: menuArray,topNav } = toRefs(reactive(useStoreState('menu', ['menu','topNav'])));
 // 获取user store-actions方法
 const userList = useStoreActions('user', ['ACT_Logout']);
 const actLogout = () => {
@@ -187,6 +188,7 @@ watchEffect(() => {
 		flex-direction: column;
 		margin-right: 3px;
 		box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1);
+    padding-top: 15px;
 		.collapse {
 			position: fixed;
 			bottom: 0;

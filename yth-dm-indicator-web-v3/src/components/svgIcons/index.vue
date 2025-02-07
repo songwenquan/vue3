@@ -14,15 +14,15 @@ const props = defineProps({
 	},
 	color: {
 		type: String,
-		default: '#08bebe',
+		default: '',
 	},
 	width: {
 		type: String,
-		default: '20',
+		default: '14',
 	},
 	height: {
 		type: String,
-		default: '20',
+		default: '14',
 	},
 });
 const iconName = computed(() => {
@@ -36,4 +36,9 @@ const svgClass = computed(() => {
 })
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.svg-icon{
+  margin-right: 15px;
+  fill: currentColor;
+}
+</style>

@@ -15,7 +15,7 @@
 		<el-menu-item v-else :index="sub.menuUrl" class="scmp-menu-item" :title="sub.title || sub.menuName">
 			<!--  添加  sub-el-icon 类收缩时，图标居中      -->
 <!--			<img v-if="$route.path !== sub.menuUrl && sub.icon !== ''" :src="sub.icon" alt="" />-->
-      <SvgIcons :icon-class="sub.meta && sub.meta.icon" v-if="sub.meta.icon !== ''"/>
+      <svg-icon :icon-class="sub.meta && sub.meta.icon" v-if="sub.meta.icon !== ''"/>
 			<img v-else-if="$route.path === sub.menuUrl && sub.iconActive !== ''" :src="sub.iconActive" alt="" />
 			<slot name="title" v-if="!isCollapse" class="fz15 ml5">{{ sub.title || sub.menuName }}</slot>
 		</el-menu-item>
@@ -24,7 +24,6 @@
 
 <script setup lang="ts">
 import { onMounted, toRefs } from 'vue';
-import SvgIcons from "@/components/svgIcons/index.vue";
 const props = defineProps({
 	sub: {
 		type: Object,
@@ -90,7 +89,8 @@ onMounted(() => {
 		}
 	}
 	.el-menu-item.is-active {
-		background-color: #eaf0fd;
+		background: linear-gradient(90deg,#1677ff,#01a6ff);
+    color: #ffffff;
 	}
 }
 </style>
