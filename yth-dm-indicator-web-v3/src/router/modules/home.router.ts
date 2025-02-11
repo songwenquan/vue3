@@ -5,9 +5,10 @@
  * fullScreen   TCB 左侧列表布局   TCB-TOP 顶部菜单列表布局  currency 自定义布局  noTagsView 是否展示已点击菜单序列  affix 是否支持删除
  *
  */
-export default [
+export const constantRoutes =  [
   {
     path: '/:pathMatch(.*)*',
     component: () => import('@/views/error/404.vue'),
   }
 ];
+export default constantRoutes;

@@ -185,7 +185,6 @@ export default {
         let menus = router.options.routes.concat(state.menu)
         await routerListFunc(menus,urlArray.path)
         if(listArray){
-          listArray.query = urlArray.query
           state.visitedViews.push(listArray)
         }
       }
