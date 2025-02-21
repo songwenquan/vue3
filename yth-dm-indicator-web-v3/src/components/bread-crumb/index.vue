@@ -44,9 +44,9 @@ const handleLink = (item: any) => {
 	margin-bottom: 16px;
 	.app-breadcrumb {
 		line-height: 50px;
-    .bread-f{
-      color: #0462f0;
-    }
+		.bread-f {
+			color: #0462f0;
+		}
 	}
 }
 </style>

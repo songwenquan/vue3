@@ -38,7 +38,7 @@ code映射字段 * @type 1.文本框 2.下拉框 3.部门tree 4.时间范围 */
 							range-separator="至"
 							start-placeholder="开始日期"
 							end-placeholder="结束日期"
-							:disabled-date=item.disabledDate
+							:disabled-date="item.disabledDate"
 						>
 						</el-date-picker>
 					</el-form-item>
@@ -73,10 +73,10 @@ const props = defineProps({
 		type: Array,
 		default: () => {
 			return [
-        {
-          disabledDate:Boolean
-        }
-      ];
+				{
+					disabledDate: Boolean,
+				},
+			];
 		},
 	},
 	// 高级查询条件是否显示

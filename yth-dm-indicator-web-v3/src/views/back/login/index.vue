@@ -48,7 +48,7 @@ import { useRouter } from 'vue-router';
 import LangSelect from '@/components/lang_select/index.vue';
 import type { FormInstance, FormRules } from 'element-plus';
 import { useStoreActions } from '@/store/vuex';
-import {checkCapslock, children, childrenStr} from '@/utils/utils';
+import { checkCapslock, children, childrenStr } from '@/utils/utils';
 const router = useRouter();
 const { proxy } = getCurrentInstance() as any; // this
 // 登录

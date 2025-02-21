@@ -56,6 +56,5 @@ export const installPlugins = {
 				duration: duration || 2000,
 			});
 		};
-
 	},
 };

@@ -9,9 +9,9 @@ import _ from 'lodash';
 import qs from 'qs';
 axios.defaults.withCredentials = true;
 // 自定义validateStatus函数
-const validateStatus = (status:any) => {
-  // 返回你希望认为是成功的状态码列表
-  return status >= 200 && status < 300 || status === 302; // 默认行为是 2xx 状态码为成功
+const validateStatus = (status: any) => {
+	// 返回你希望认为是成功的状态码列表
+	return (status >= 200 && status < 300) || status === 302; // 默认行为是 2xx 状态码为成功
 };
 // 设置axios默认配置
 axios.defaults.validateStatus = validateStatus;
@@ -82,16 +82,16 @@ class HttpClient {
 			async (res: AxiosResponse) => {
 				this.hideLoading();
 				if (res.status === 200) {
-          if (res.data.ret === 302 && res.data.redirectUrl) {
-            if (window.top) {
-              window.top.location.href = res.data.redirectUrl;
-            } else {
-              window.location.href = res.data.redirectUrl;
-            }
-            return;
-          }else{
-            return res.data;
-          }
+					if (res.data.ret === 302 && res.data.redirectUrl) {
+						if (window.top) {
+							window.top.location.href = res.data.redirectUrl;
+						} else {
+							window.location.href = res.data.redirectUrl;
+						}
+						return;
+					} else {
+						return res.data;
+					}
 				} else {
 					throw new Error('网络连接超时');
 				}
@@ -124,11 +124,11 @@ class HttpClient {
 
 	request(options: any) {
 		// const instance: AxiosInstance = axios.create();
-    const instance: AxiosInstance = axios.create({
-      headers: {
-        'X-Requested-With': 'XMLHttpRequest',
-      },
-    });
+		const instance: AxiosInstance = axios.create({
+			headers: {
+				'X-Requested-With': 'XMLHttpRequest',
+			},
+		});
 		// options = Object.assign(this.getInsideConfig(), options)
 		// 深合并，使用 request方法时，可以对请求做任意层次配置，前者将被覆盖
 		options = _.merge(this.getInsideConfig(options.baseUrl), options);

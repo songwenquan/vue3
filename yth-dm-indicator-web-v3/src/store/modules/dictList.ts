@@ -29,17 +29,17 @@ export default {
 					if (config.flag) {
 						typeCodeStr === 'ALL'
 							? Object.keys(config.data).forEach((key) => {
-                commit('SET_TYPE_CODE', {
-                  dataType: key,
-                  data: config.data[key],
-                });
-              })
+									commit('SET_TYPE_CODE', {
+										dataType: key,
+										data: config.data[key],
+									});
+								})
 							: typeCodes.forEach((item: any) => {
-                commit('SET_TYPE_CODE', {
-                  dataType: item,
-                  data: config.data[item],
-                });
-              });
+									commit('SET_TYPE_CODE', {
+										dataType: item,
+										data: config.data[item],
+									});
+								});
 					}
 				});
 			}

@@ -5,18 +5,19 @@
 			<span class="el-dropdown-link cursor-p flex">
 				<el-image class="scmp_user_photo mr15" :src="txSrc" fit="fill" :size="36" @error="txOnError" />
 				<span class="scmp_user_name ell color-f">{{ userInfo.loginName }}</span>
-				<span class="color-f">({{ userInfo.userTypeText}})</span>
-<!--				<div class="ml20 tuichu cursor-p" @click="loginOut">-->
-<!--					<img src="~@/assets/tuichu.png" alt="" />-->
-<!--					<span class="color-f"> {{ $t('navbar.logOut') }}</span>-->
-<!--				</div>-->
+				<span class="color-f">({{ userInfo.userTypeText }})</span>
+				<!--				<div class="ml20 tuichu cursor-p" @click="loginOut">-->
+				<!--					<img src="~@/assets/tuichu.png" alt="" />-->
+				<!--					<span class="color-f"> {{ $t('navbar.logOut') }}</span>-->
+				<!--				</div>-->
 			</span>
-      <template #dropdown>
-        <el-dropdown-menu>
-          <router-link to="/user/profile"><el-dropdown-item>个人中心</el-dropdown-item></router-link>
-          <el-dropdown-item divided :command="{type: 'loginOut'}"> {{ $t("navbar.logOut") }}</el-dropdown-item>
-        </el-dropdown-menu>
-      </template>
+			<template #dropdown>
+				<el-dropdown-menu>
+					<router-link to="/user/profile"><el-dropdown-item>个人中心</el-dropdown-item></router-link>
+					<el-dropdown-item command="setLayout"><span>布局设置</span></el-dropdown-item>
+					<el-dropdown-item divided :command="{ type: 'loginOut' }"> {{ $t('navbar.logOut') }}</el-dropdown-item>
+				</el-dropdown-menu>
+			</template>
 		</el-dropdown>
 	</div>
 </template>

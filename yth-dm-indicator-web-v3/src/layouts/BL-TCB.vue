@@ -10,8 +10,8 @@
 					<span class="title_text fz18 color-f">智能业务协同系统</span>
 				</template>
 			</Header>
-      <!-- 横向布局 菜单栏 -->
-      <TopNav id="topmenu-container" class="topmenu-container" v-if="topNav" />
+			<!-- 横向布局 菜单栏 -->
+			<TopNav id="topmenu-container" class="topmenu-container" v-if="topNav" />
 			<UserPanel @loginOut="actLogout"></UserPanel>
 		</el-header>
 		<el-container class="main_content flex flex-h-1">
@@ -23,7 +23,7 @@
 					<span class="tl ml10" v-show="!isCollapse">收起菜单</span>
 				</div>
 			</el-aside>
-			<el-main class="main_primary flex" :style="{width: isCollapse ? 'calc(100% - 64px)' : 'calc(100% - 220px)'}">
+			<el-main class="main_primary flex" :style="{ width: isCollapse ? 'calc(100% - 64px)' : 'calc(100% - 220px)' }">
 				<router-view />
 			</el-main>
 		</el-container>
@@ -40,17 +40,18 @@ import MenuLeft from '@/components/menu-left/index.vue';
 import TopNav from '@/components/top-nav/index.vue';
 const router = useRouter();
 const route = useRoute();
-let { isCollapse, activeIdx, subMenuClassName, levelList,leftMenu} = toRefs(
+let { isCollapse, activeIdx, subMenuClassName, levelList, leftMenu, isScreenfull } = toRefs(
 	reactive({
 		isCollapse: false as boolean, // 展开收起状态
 		activeIdx: '',
 		subMenuClassName: 'clear-top-drop-dowm',
 		levelList: [],
-    leftMenu:[]
+		leftMenu: [],
+		isScreenfull: false,
 	})
 );
 // menu store-state-menu
-const { menu: menuArray,topNav } = toRefs(reactive(useStoreState('menu', ['menu','topNav'])));
+const { menu: menuArray, topNav } = toRefs(reactive(useStoreState('menu', ['menu', 'topNav'])));
 // 获取user store-actions方法
 const userList = useStoreActions('user', ['ACT_Logout']);
 const actLogout = () => {
@@ -102,7 +103,7 @@ const levelListFunc = () => {
 				}
 			});
 		});
-		menuList.ACT_SetlevelList(  parentDirectory);
+		menuList.ACT_SetlevelList(parentDirectory);
 	} else {
 		menuList.ACT_SetlevelList([{ menuUrl: (levelList as any).menuUrl, menuName: (levelList as any).menuName }]);
 	}
@@ -157,12 +158,12 @@ const menuNameChild = (item: any, children: any, key: string, code: string) => {
 };
 // 路由监听
 watchEffect(() => {
-  // 双位置菜单拆分
-  menuArray.value.map((item:any)=>{
-    if(route.path.startsWith(item.path)){
-      leftMenu.value = item.children
-    }
-  })
+	// 双位置菜单拆分
+	menuArray.value.map((item: any) => {
+		if (route.path.startsWith(item.path)) {
+			leftMenu.value = item.children;
+		}
+	});
 	levelListFunc();
 });
 </script>
@@ -188,7 +189,7 @@ watchEffect(() => {
 		flex-direction: column;
 		margin-right: 3px;
 		box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1);
-    padding-top: 15px;
+		margin-top: 15px;
 		.collapse {
 			position: fixed;
 			bottom: 0;
@@ -203,7 +204,7 @@ watchEffect(() => {
 	.main_primary {
 		padding: 15px;
 		background-color: #eef4fb;
-    height: 100%;
+		height: 100%;
 	}
 }
 </style>

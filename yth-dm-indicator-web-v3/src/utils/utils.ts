@@ -4,13 +4,13 @@
  * @Desciption:公共方法
  */
 declare global {
-  interface ImportMeta {
-    glob: any;
-  }
+	interface ImportMeta {
+		glob: any;
+	}
 }
 import Moment from 'moment';
 import mitt, { Emitter } from 'mitt';
-import store from "@/store";
+import store from '@/store';
 // 菜单权限校验
 export function checkPermission(key: string, val: string, arr: any) {
 	let result = -1; // 初始值为-1，表示未找到
@@ -81,53 +81,53 @@ export function exportExcel(params: any, service: any, api: any, menuName: any, 
 	});
 }
 // 判断是否存在子集url
-export function children(menus: any,type:any) {
-  let result = "";
-  if(menus[0].children.length > 0){
-    result = children(menus[0].children,'')
-  }else{
-    result = menus[0].menuUrl
-    store.commit('menu/MUT_SetMenuvisitedViews', result);
-  }
-  return result
+export function children(menus: any, type: any) {
+	let result = '';
+	if (menus[0].children.length > 0) {
+		result = children(menus[0].children, '');
+	} else {
+		result = menus[0].menuUrl;
+		store.commit('menu/MUT_SetMenuvisitedViews', result);
+	}
+	return result;
 }
-let redirect = ''
+let redirect = '';
 // 判断是否存在子集url（拼接式）
-export function childrenStr(menus: any,type:any) {
-  if(menus[0].children && menus[0].children.length > 0){
-    if(type == 1){
-      redirect = ''
-      redirect  = redirect + menus[0].path
-    }else{
-      redirect  = redirect + '/' + menus[0].path
-    }
-    childrenStr(menus[0].children,'')
-  }else{
-    redirect  = redirect + '/' + menus[0].path
-  }
-  return redirect
+export function childrenStr(menus: any, type: any) {
+	if (menus[0].children && menus[0].children.length > 0) {
+		if (type == 1) {
+			redirect = '';
+			redirect = redirect + menus[0].path;
+		} else {
+			redirect = redirect + '/' + menus[0].path;
+		}
+		childrenStr(menus[0].children, '');
+	} else {
+		redirect = redirect + '/' + menus[0].path;
+	}
+	return redirect;
 }
 // 判断url是否是http或https
-export function isHttp(url:any) {
-  return url.indexOf('http://') !== -1 || url.indexOf('https://') !== -1
+export function isHttp(url: any) {
+	return url.indexOf('http://') !== -1 || url.indexOf('https://') !== -1;
 }
 // 匹配views里面所有的.vue文件
-const viewsModules: any = require.context('../views/',true,/\.vue$/);
-const dynamicViewsModules = Object.assign({},{ ...viewsModules });
-export const loadView = (view:string,type:any) => {
-  if(type === 1){
-    return () => import('@/views/index.vue')
-  }else {
-    let res
-    for (const path in dynamicViewsModules.keys()) {
-      const dir = dynamicViewsModules.keys()[path].split('./')[1].split('.vue')[0]
-      if (dir === view) {
-        res = () => require.ensure([],(require) => require(`@/views/${dir}.vue`))
-      }
-    }
-    return res
-  }
-}
+const viewsModules: any = require.context('../views/', true, /\.vue$/);
+const dynamicViewsModules = Object.assign({}, { ...viewsModules });
+export const loadView = (view: string, type: any) => {
+	if (type === 1) {
+		return () => import('@/views/index.vue');
+	} else {
+		let res;
+		for (const path in dynamicViewsModules.keys()) {
+			const dir = dynamicViewsModules.keys()[path].split('./')[1].split('.vue')[0];
+			if (dir === view) {
+				res = () => require.ensure([], (require) => require(`@/views/${dir}.vue`));
+			}
+		}
+		return res;
+	}
+};
 // 全局通信事件方法
 const emitter: Emitter<MittType> = mitt<MittType>();
 // 导出

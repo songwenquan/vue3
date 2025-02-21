@@ -153,15 +153,15 @@ const { list, moreButton, params, keyList, btnObj, expandCode, expandKey } = toR
 				format: (key: any, row: any) =>
 					row[key] === 'P'
 						? '<div class="format">' +
-						  '<span style="width:20%;height:29px;background-color: #ff0000;"></span>' +
-						  '<span style="width: 75%" class="ell">222231231211</span>' +
-						  '</div>'
+							'<span style="width:20%;height:29px;background-color: #ff0000;"></span>' +
+							'<span style="width: 75%" class="ell">222231231211</span>' +
+							'</div>'
 						: row[key] === 'C'
-						? '<div class="format">' +
-						  '<span style="width:20%;height:29px;background-color: #ff0000;"></span>' +
-						  '<span style="width: 75%" class="ell">row[key]</span>' +
-						  '</div>'
-						: row[key],
+							? '<div class="format">' +
+								'<span style="width:20%;height:29px;background-color: #ff0000;"></span>' +
+								'<span style="width: 75%" class="ell">row[key]</span>' +
+								'</div>'
+							: row[key],
 				click: aaaa,
 			},
 			{

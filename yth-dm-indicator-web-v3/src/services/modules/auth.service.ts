@@ -14,13 +14,13 @@ export default {
 			method: 'post',
 		});
 	},
-  // 获取系统菜单
-  getgetRoutersData() {
-    return http1$.request({
-      url: '/uap/getRouters',
-      method: 'get',
-    });
-  },
+	// 获取系统菜单
+	getgetRoutersData() {
+		return http1$.request({
+			url: '/uap/getRouters',
+			method: 'get',
+		});
+	},
 	// 获取uap配置权限菜单
 	getMenuData() {
 		return http1$.request({

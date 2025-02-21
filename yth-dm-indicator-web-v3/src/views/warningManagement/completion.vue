@@ -43,7 +43,7 @@ watch(value, (newValue) => {
 });
 const one = (value: any) => {
 	dataMap.msg = 2;
-  console.log(value)
+	console.log(value);
 };
 const two = (value: any) => {
 	one(value);

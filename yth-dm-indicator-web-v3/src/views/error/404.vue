@@ -1,15 +1,8 @@
 /* * @Author: wqsong2 * @Date: 2023/11/8 18:12 * @Desciption:404页面 */
 <template>
-  <div class="wscn-http404-container">
-  </div>
+	<div class="wscn-http404-container">1111</div>
 </template>
 
-<script setup>
-const message = computed(() => {
-  return '找不到网页！'
-})
-</script>
+<script setup></script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

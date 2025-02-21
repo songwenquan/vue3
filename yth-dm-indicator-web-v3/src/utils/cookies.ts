@@ -17,10 +17,10 @@ export const cookie = {
 };
 // 获取特殊存储数据
 export const storageSetting = {
-  // 获取对应Key
-  get(key: string,keys:any) {
-    if(localStorage.getItem(key)){
-      return localStorage.getItem(key)![keys]
-    }
-  },
+	// 获取对应Key
+	get(key: string, keys: any) {
+		if (localStorage.getItem(key)) {
+			return localStorage.getItem(key)![keys];
+		}
+	},
 };
